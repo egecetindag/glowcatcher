@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 export default function CategoryFilter({
   categories,
@@ -14,17 +15,14 @@ export default function CategoryFilter({
   return (
     <div className="flex gap-2 flex-wrap">
       {categories.map((cat) => (
-        <button
+        <Button
           key={cat}
+          variant={active === cat ? "glow" : "matte"}
+          size="pill"
           onClick={() => router.push(cat === "All" ? "/" : `/?category=${cat}`)}
-          className={`px-4 py-1.5 rounded-full text-sm transition ${
-            active === cat
-              ? "bg-amber-500 text-white"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-          }`}
         >
           {cat}
-        </button>
+        </Button>
       ))}
     </div>
   );

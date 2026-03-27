@@ -1,6 +1,9 @@
-import { createClient } from "@/lib/supabase";
+import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
 import DealCard from "@/components/DealCard";
 import CategoryFilter from "@/components/CategoryFilter";
+import { Button } from "@/components/ui/button";
 
 const CATEGORIES = [
   "All",
@@ -15,48 +18,96 @@ const CATEGORIES = [
 export default async function HomePage({
   searchParams,
 }: {
-  searchParams: { category?: string };
+  searchParams: Promise<{ category?: string; tab?: string }>;
 }) {
-  const supabase = createClient();
-  const category = searchParams.category;
+  const cookieStore = await cookies();
+  const supabase = await createClient(cookieStore);
+
+  const { category, tab = "most-glowing" } = await searchParams;
 
   let query = supabase
     .from("deals")
-    .select("*")
-    .eq("status", "approved")
-    .order("glow_count", { ascending: false });
+    .select("*, profiles(username, avatar_url)")
+    .eq("status", "approved");
 
   if (category && category !== "All") {
     query = query.eq("category", category);
+  }
+
+  if (tab === "most-glowing") {
+    query = query.order("glow_count", { ascending: false });
+  } else {
+    query = query.order("created_at", { ascending: false });
   }
 
   const { data: deals } = await query;
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-gray-900 mb-1">
-          Today's glowing deals
-        </h1>
-        <p className="text-gray-500 text-sm">
-          Fresh beauty finds, caught by the community
+      {/* Hero */}
+      <section className="mb-10 pt-4">
+        <p className="text-xs font-medium uppercase tracking-widest text-on-surface-variant mb-3">
+          Editor's Choice
         </p>
+        <h1 className="font-serif text-4xl font-bold text-on-surface leading-tight mb-3">
+          Radiance is just
+          <br />a deal away.
+        </h1>
+        <p className="text-on-surface-variant text-sm mb-6 max-w-xs leading-relaxed">
+          Discover curated luxury beauty offers with our proprietary Glow
+          scoring system.
+        </p>
+        <Button variant="glow" size="lg" asChild>
+          <Link href="#deals">Explore Trending</Link>
+        </Button>
+      </section>
+
+      {/* Category filter */}
+      <div className="mb-4">
+        <CategoryFilter categories={CATEGORIES} active={category || "All"} />
       </div>
 
-      <CategoryFilter categories={CATEGORIES} active={category || "All"} />
+      {/* Most Glowing / All tabs */}
+      <div className="flex gap-1 mb-4 bg-surface-container-low rounded-full p-1 w-fit">
+        <Link
+          href={`/?${category ? `category=${category}&` : ""}tab=most-glowing`}
+          className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${
+            tab === "most-glowing"
+              ? "bg-surface-container-lowest text-on-surface shadow-sm"
+              : "text-on-surface-variant hover:text-on-surface"
+          }`}
+        >
+          ✦ Most Glowing
+        </Link>
+        <Link
+          href={`/?${category ? `category=${category}&` : ""}tab=all`}
+          className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${
+            tab === "all"
+              ? "bg-surface-container-lowest text-on-surface shadow-sm"
+              : "text-on-surface-variant hover:text-on-surface"
+          }`}
+        >
+          All
+        </Link>
+      </div>
 
-      {deals && deals.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-          {deals.map((deal) => (
-            <DealCard key={deal.id} deal={deal} />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-20 text-gray-400">
-          <p className="text-4xl mb-3">✦</p>
-          <p className="text-sm">No deals found. Be the first to submit one!</p>
-        </div>
-      )}
+      {/* Deals feed */}
+      <div id="deals" className="bg-surface-container-low rounded-2xl p-4">
+        {deals && deals.length > 0 ? (
+          <div className="flex flex-col gap-3">
+            {deals.map((deal) => (
+              <DealCard key={deal.id} deal={deal} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20 text-on-surface-variant">
+            <p className="text-4xl mb-3">✦</p>
+            <p className="text-sm">
+              No deals found. Be the first to submit one!
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
