@@ -1,18 +1,24 @@
 "use server";
+
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 
-export async function getDeal(id: string) {
+export async function getProfileDeals(userId: string, category?: string) {
   const cookieStore = await cookies();
   const supabase = await createClient(cookieStore);
 
-  const { data, error } = await supabase
+  let query = supabase
     .from("deals")
     .select("*, profiles(username, avatar_url)")
-    .eq("id", id)
+    .eq("user_id", userId)
     .eq("status", "approved")
-    .single();
+    .order("created_at", { ascending: false });
 
+  if (category && category !== "All") {
+    query = query.eq("category", category);
+  }
+
+  const { data, error } = await query;
   if (error) throw new Error(error.message);
   return data;
 }

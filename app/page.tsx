@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
-import DealCard from "@/components/DealCard";
+import DealCard from "@/components/deal-card/DealCard";
 import CategoryFilter from "@/components/CategoryFilter";
 import { Button } from "@/components/ui/button";
 
@@ -46,20 +46,19 @@ export default async function HomePage({
     <div>
       {/* Hero */}
       <section className="mb-10 pt-4">
-        <p className="text-xs font-medium uppercase tracking-widest text-on-surface-variant mb-3">
-          Editor's Choice
-        </p>
+        {/* <p className="text-xs font-medium uppercase tracking-widest text-on-surface-variant mb-3">
+          Editor&apos;s Choice
+        </p> */}
         <h1 className="font-serif text-4xl font-bold text-on-surface leading-tight mb-3">
           Radiance is just
           <br />a deal away.
         </h1>
         <p className="text-on-surface-variant text-sm mb-6 max-w-xs leading-relaxed">
-          Discover curated luxury beauty offers with our proprietary Glow
-          scoring system.
+          Discover the best beauty offers!
         </p>
-        <Button variant="glow" size="lg" asChild>
+        {/* <Button variant="glow" size="lg" asChild>
           <Link href="#deals">Explore Trending</Link>
-        </Button>
+        </Button> */}
       </section>
 
       {/* Category filter */}

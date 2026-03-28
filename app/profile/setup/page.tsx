@@ -66,7 +66,7 @@ export default function ProfileSetupPage() {
 
           <div className="px-6 pb-6 flex flex-col gap-3">
             <Button variant="glow" className="w-full" type="submit">
-              Let's glow
+              Let&apos;s glow
             </Button>
             <Button
               variant="ghost"

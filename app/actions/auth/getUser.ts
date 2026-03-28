@@ -3,7 +3,16 @@
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 
-export async function getUser() {
+export type CurrentUser = {
+  id: string;
+  email?: string;
+  username?: string;
+  avatar_url?: string;
+  role?: string;
+  profile_completed?: boolean;
+};
+
+export async function getUser(): Promise<CurrentUser | null> {
   const cookieStore = await cookies();
   const supabase = await createClient(cookieStore);
 
@@ -18,5 +27,9 @@ export async function getUser() {
     .eq("id", user.id)
     .single();
 
-  return { ...user, ...profile };
+  return {
+    id: user.id,
+    email: user.email,
+    ...profile,
+  };
 }

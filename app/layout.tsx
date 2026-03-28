@@ -26,6 +26,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${jakarta.variable} ${notoSerif.variable}`}>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css"
+        />
+      </head>
+
       <body>
         <Navbar />
         <main className="max-w-2xl mx-auto px-4 py-8">{children}</main>

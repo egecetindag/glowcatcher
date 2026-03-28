@@ -25,7 +25,7 @@ export async function setupProfile(formData: FormData) {
   }
 
   const username = formData.get("username") as string;
-  const bio = formData.get("bio") as string;
+  const bio = (formData.get("bio") as string) || null;
   const avatarFile = formData.get("avatar") as File;
 
   let avatar_url = null;

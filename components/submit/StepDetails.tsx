@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { submitDeal } from "@/app/actions/deals/submitDeal";
+import { submitDeal } from "@/app/deals/submitDeal";
 import type { DealFormData } from "@/app/submit/page";
 
 const CATEGORIES = [

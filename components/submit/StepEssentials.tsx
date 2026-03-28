@@ -19,7 +19,7 @@ export default function StepEssentials({ data, updateFields, onNext }: Props) {
     <div className="flex flex-col gap-6">
       <div>
         <h1 className="text-2xl font-semibold">
-          Let's start with the essentials
+          Let&apos;s start with the essentials
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
           The basics about your deal

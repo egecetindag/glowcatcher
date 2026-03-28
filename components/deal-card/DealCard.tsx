@@ -1,14 +1,18 @@
-import Link from "next/link";
+"use client";
+
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatDistanceToNow } from "date-fns";
 import GlowVote from "./GlowVote";
+import { Button } from "../ui/button";
 
 type Deal = {
   id: string;
   title: string;
   store: string;
+  url: string;
   price: number;
   original_price?: number;
   glow_count: number;
@@ -33,6 +37,7 @@ function getGlowRating(score: number) {
 }
 
 export default function DealCard({ deal }: { deal: Deal }) {
+  const router = useRouter();
   const score = deal.glow_count - (deal.down_count ?? 0);
   const rating = getGlowRating(score);
   const discount = deal.original_price
@@ -42,12 +47,12 @@ export default function DealCard({ deal }: { deal: Deal }) {
     : null;
 
   return (
-    <div className="bg-surface-container-lowest rounded-xl overflow-hidden flex gap-0 hover:shadow-[0_8px_24px_oklch(0.20_0.04_345/5%)] transition-shadow">
+    <div
+      onClick={() => router.push(`/deals/${deal.id}`)}
+      className="bg-surface-container-lowest rounded-xl overflow-hidden flex cursor-pointer hover:shadow-[0_8px_24px_oklch(0.20_0.04_345/5%)] transition-shadow"
+    >
       {/* Left — image */}
-      <Link
-        href={`/deals/${deal.id}`}
-        className="relative w-32 shrink-0 bg-surface-container-low"
-      >
+      <div className="relative w-32 shrink-0 bg-surface-container-low">
         {deal.image_url ? (
           <Image
             src={deal.image_url}
@@ -61,11 +66,10 @@ export default function DealCard({ deal }: { deal: Deal }) {
             ✦
           </div>
         )}
-      </Link>
+      </div>
 
       {/* Right — content */}
       <div className="flex flex-col gap-2 p-4 flex-1 min-w-0">
-        {/* Top row — score + badges + time */}
         <div className="flex items-center gap-2 flex-wrap">
           <GlowVote
             dealId={deal.id}
@@ -81,14 +85,10 @@ export default function DealCard({ deal }: { deal: Deal }) {
           </span>
         </div>
 
-        {/* Title */}
-        <Link href={`/deals/${deal.id}`}>
-          <h2 className="font-serif text-base font-semibold text-on-surface leading-snug hover:text-primary transition-colors line-clamp-2">
-            {deal.title}
-          </h2>
-        </Link>
+        <h2 className="font-serif text-base font-semibold text-on-surface leading-snug hover:text-primary transition-colors line-clamp-2">
+          {deal.title}
+        </h2>
 
-        {/* Price + store + posted by */}
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-lg font-semibold text-primary">
             £{deal.price}
@@ -105,7 +105,13 @@ export default function DealCard({ deal }: { deal: Deal }) {
           {deal.profiles && (
             <>
               <span className="text-xs text-on-surface-variant">·</span>
-              <div className="flex items-center gap-1">
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  router.push(`/profile/${deal.profiles!.username}`);
+                }}
+                className="flex items-center gap-1"
+              >
                 <Avatar className="w-4 h-4">
                   <AvatarImage src={deal.profiles.avatar_url ?? undefined} />
                   <AvatarFallback className="text-[8px] bg-pink-100 text-pink-700">
@@ -120,21 +126,22 @@ export default function DealCard({ deal }: { deal: Deal }) {
           )}
         </div>
 
-        {/* Description snippet */}
         {deal.description && (
           <p className="text-xs text-on-surface-variant line-clamp-2 leading-relaxed">
             {deal.description}
           </p>
         )}
 
-        {/* Get deal button */}
-        <div className="mt-auto pt-1">
-          <Link
-            href={deal.id ? `/deals/${deal.id}` : "#"}
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
+        <div className="mt-auto pt-1 self-end">
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+              window.open(deal.url, "_blank", "noopener,noreferrer");
+            }}
+            className="inline-flex items-center gap-1.5 text-xs font-medium"
           >
-            Get deal →
-          </Link>
+            Get The Deal →
+          </Button>
         </div>
       </div>
     </div>

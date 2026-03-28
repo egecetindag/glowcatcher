@@ -11,19 +11,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { CurrentUser } from "@/app/actions/auth/getUser";
 
-type User = {
-  username?: string;
-  email?: string;
-  avatar_url?: string;
-  role?: string;
-};
-
-export default function NavbarUser({ user }: { user: User }) {
+export default function NavbarUser({ user }: { user: CurrentUser }) {
   return (
     <div className="flex items-center gap-3">
-      <Button variant="secondary" size="sm" asChild>
-        <Link href="/submit">Submit deal</Link>
+      <Button variant="glow" size="sm" asChild>
+        <Link href="/submit">Add a Deal</Link>
       </Button>
 
       {(user.role === "editor" || user.role === "admin") && (
@@ -48,15 +42,18 @@ export default function NavbarUser({ user }: { user: User }) {
           </div>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
+            <i className="fi fi-rr-user text-sm leading-none" />
             <Link href="/profile">My profile</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
+            <i className="fi fi-rr-tag text-sm leading-none" />
             <Link href="/profile/deals">My deals</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
             <form action={signOut}>
               <button className="w-full text-left text-red-500">
+                <i className="fi fi-rr-sign-out-alt text-sm leading-none" />
                 Sign out
               </button>
             </form>

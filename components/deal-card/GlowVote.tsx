@@ -97,7 +97,13 @@ export default function GlowVote({
   }
 
   return (
-    <div className="flex items-center gap-1 bg-surface-container-low rounded-full px-1 py-0.5">
+    <div
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+      }}
+      className="flex items-center gap-1 bg-surface-container-low rounded-full px-1 py-0.5"
+    >
       <button
         onClick={() => handleVote("down")}
         disabled={loading}

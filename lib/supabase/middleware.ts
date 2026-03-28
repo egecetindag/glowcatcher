@@ -54,7 +54,6 @@ export const updateSession = async (request: NextRequest) => {
 
   // Editor koruması
   if (EDITOR_ROUTES.some((r) => pathname.startsWith(r))) {
-    console.log("selam");
     if (!user) {
       return NextResponse.redirect(new URL("/auth/login", request.url));
     }
