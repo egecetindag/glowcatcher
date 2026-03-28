@@ -1,43 +1,49 @@
-import { signUp } from "@/app/actions/auth";
+import { signUp } from "@/app/actions/auth/signUp";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import Link from "next/link";
 
 export default function RegisterPage() {
   return (
-    <div className="min-h-[80vh] flex items-center justify-center">
-      <Card className="w-full max-w-sm">
-        <CardHeader className="text-center">
-          <p className="text-2xl text-amber-500 mb-2">✦</p>
-          <CardTitle>Create account</CardTitle>
-          <CardDescription>Join the GlowCatcher community</CardDescription>
-        </CardHeader>
+    <>
+      <div className=" bg-[url('/water_bg.jpg')] bg-cover bg-center fixed w-full bottom-0 inset-0 opacity-50 -z-10"></div>
+      <div className="mb-12 flex items-center justify-center py-12 px-10 md:mx-10 bg-white shadow-sm rounded-lg">
+        <div className="w-full max-w-sm">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="font-serif text-4xl font-bold text-on-surface mb-2">
+              Join the Glow
+            </h1>
+            <p className="text-on-surface-variant text-sm">
+              Create your account to start curating your deals.
+            </p>
+          </div>
 
-        <form action={signUp}>
-          <CardContent className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="email">Email</Label>
+          <form action={signUp} className="flex flex-col gap-5">
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="email"
+                className="text-xs font-semibold uppercase tracking-widest text-on-surface"
+              >
+                Email Address
+              </label>
               <Input
                 id="email"
                 name="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder="hello@glowcatcher.com"
                 required
                 autoComplete="off"
               />
             </div>
 
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="password">Password</Label>
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="password"
+                className="text-xs font-semibold uppercase tracking-widest text-on-surface"
+              >
+                Password
+              </label>
               <Input
                 id="password"
                 name="password"
@@ -48,8 +54,13 @@ export default function RegisterPage() {
               />
             </div>
 
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="confirm_password">Confirm password</Label>
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="confirm_password"
+                className="text-xs font-semibold uppercase tracking-widest text-on-surface"
+              >
+                Confirm Password
+              </label>
               <Input
                 id="confirm_password"
                 name="confirm_password"
@@ -60,24 +71,28 @@ export default function RegisterPage() {
                 autoComplete="off"
               />
             </div>
-          </CardContent>
 
-          <CardFooter className="flex flex-col gap-3">
-            <Button variant="glow" className="w-full" type="submit">
-              Create account
+            <Button
+              variant="glow"
+              size="lg"
+              className="w-full uppercase tracking-widest mt-1"
+              type="submit"
+            >
+              Create Account
             </Button>
-            <p className="text-xs text-muted-foreground text-center">
-              Already have an account?{" "}
-              <Link
-                href="/auth/login"
-                className="text-pink-600 hover:underline"
-              >
-                Sign in
-              </Link>
-            </p>
-          </CardFooter>
-        </form>
-      </Card>
-    </div>
+          </form>
+
+          <p className="text-sm text-on-surface-variant text-center mt-6">
+            Already have an account?{" "}
+            <Link
+              href="/auth/login"
+              className="text-primary font-medium hover:underline"
+            >
+              Log in
+            </Link>
+          </p>
+        </div>
+      </div>
+    </>
   );
 }

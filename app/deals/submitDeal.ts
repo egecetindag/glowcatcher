@@ -15,6 +15,22 @@ export async function submitDeal(formData: FormData) {
 
   const original_price = formData.get("original_price");
 
+  let image_url = (formData.get("image_url") as string) || null;
+  const imageFile = formData.get("image_file") as File | null;
+  if (imageFile && imageFile.size > 0) {
+    const ext = imageFile.name.split(".").pop();
+    const path = `deals/${user.id}/${Date.now()}.${ext}`;
+    const { error: uploadError } = await supabase.storage
+      .from("deal-images")
+      .upload(path, imageFile, { upsert: true });
+    if (!uploadError) {
+      const { data: urlData } = supabase.storage
+        .from("deal-images")
+        .getPublicUrl(path);
+      image_url = urlData.publicUrl;
+    }
+  }
+
   const { error } = await supabase.from("deals").insert({
     title: formData.get("title") as string,
     description: formData.get("description") as string,
@@ -23,7 +39,7 @@ export async function submitDeal(formData: FormData) {
     store: formData.get("store") as string,
     category: formData.get("category") as string,
     url: formData.get("url") as string,
-    image_url: formData.get("image_url") as string,
+    image_url,
     voucher_code: (formData.get("voucher_code") as string) || null,
     expires_at: (formData.get("expires_at") as string) || null,
     user_id: user.id,

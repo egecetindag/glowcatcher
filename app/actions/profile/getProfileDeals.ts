@@ -11,7 +11,7 @@ export async function getProfileDeals(userId: string, category?: string) {
     .from("deals")
     .select("*, profiles(username, avatar_url)")
     .eq("user_id", userId)
-    .eq("status", "approved")
+    .in("status", ["approved", "expired"])
     .order("created_at", { ascending: false });
 
   if (category && category !== "All") {

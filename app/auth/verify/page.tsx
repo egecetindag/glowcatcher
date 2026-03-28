@@ -1,34 +1,38 @@
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import Link from "next/link";
 
 export default function VerifyPage() {
   return (
-    <div className="min-h-[80vh] flex items-center justify-center">
-      <Card className="w-full max-w-sm text-center">
-        <CardHeader>
-          <p className="text-4xl text-amber-500 mb-2">✦</p>
-          <CardTitle>Check your email</CardTitle>
-          <CardDescription>
-            We&apos;ve sent you a verification link. Click it to activate your
-            GlowCatcher account.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-3">
-          <p className="text-sm text-muted-foreground">
+    <>
+      <div className=" bg-[url('/water_bg.jpg')] bg-cover bg-center fixed w-full bottom-0 inset-0 opacity-50 -z-10"></div>
+      <div className="mb-12 flex items-center justify-center py-12 px-10 md:mx-10 z-10 bg-white shadow-sm rounded-lg">
+        <div className="w-full max-w-sm">
+          {/* Header */}
+          <div className="mb-8 text-center">
+            <p className="text-4xl text-amber-500 mb-4">✦</p>
+            <h1 className="font-serif text-4xl font-bold text-on-surface mb-2">
+              Check your email
+            </h1>
+            <p className="text-on-surface-variant text-sm">
+              We&apos;ve sent you a verification link. Click it to activate your
+              GlowCatcher account.
+            </p>
+          </div>
+
+          <p className="text-sm text-muted-foreground text-center mb-5">
             Didn&apos;t receive it? Check your spam folder.
           </p>
-          <Button variant="glow" asChild>
-            <Link href="/auth/login">Back to sign in</Link>
+
+          <Button
+            variant="glow"
+            size="lg"
+            className="w-full uppercase tracking-widest mt-2"
+            asChild
+          >
+            <Link href="/auth/login">Back to Sign In</Link>
           </Button>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </div>
+    </>
   );
 }

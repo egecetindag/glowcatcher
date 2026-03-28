@@ -16,7 +16,7 @@ import { CurrentUser } from "@/app/actions/auth/getUser";
 export default function NavbarUser({ user }: { user: CurrentUser }) {
   return (
     <div className="flex items-center gap-3">
-      <Button variant="glow" size="sm" asChild>
+      <Button variant="glow" size="sm" asChild className="whitespace-nowrap">
         <Link href="/submit">Add a Deal</Link>
       </Button>
 
@@ -41,19 +41,23 @@ export default function NavbarUser({ user }: { user: CurrentUser }) {
             <p className="text-xs text-muted-foreground">{user.email}</p>
           </div>
           <DropdownMenuSeparator />
+
           <DropdownMenuItem asChild>
-            <i className="fi fi-rr-user text-sm leading-none" />
-            <Link href="/profile">My profile</Link>
+            <Link href={`/profile${user.username ? `/${user.username}` : ""}`}>
+              <i className="fi fi-rr-sparkles"></i>
+              My deals
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <i className="fi fi-rr-tag text-sm leading-none" />
-            <Link href="/profile/deals">My deals</Link>
+            <Link href={`/profile${user.username ? `/${user.username}` : ""}`}>
+              <i className="fi fi-rr-user text-sm leading-none" />
+              Profile Settings
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
+          <DropdownMenuItem>
             <form action={signOut}>
               <button className="w-full text-left text-red-500">
-                <i className="fi fi-rr-sign-out-alt text-sm leading-none" />
                 Sign out
               </button>
             </form>

@@ -39,9 +39,9 @@ export default function RootLayout({
 
       <body>
         <Navbar />
-        <main className="max-w-2xl mx-auto px-4 py-8">{children}</main>
+        <main className="max-w-200 mx-auto px-4 py-8">{children}</main>
         <Separator />
-        <footer className="max-w-2xl mx-auto px-4 py-6">
+        <footer className="max-w-200 mx-auto px-4 py-6">
           <p className="text-xs text-on-surface-variant text-center">
             © 2025 GlowCatcher · Beauty deals for the UK community
           </p>

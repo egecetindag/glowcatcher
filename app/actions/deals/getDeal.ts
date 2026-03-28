@@ -11,7 +11,7 @@ export async function getDeal(id: string) {
     .from("deals")
     .select("*, profiles(username, avatar_url)")
     .eq("id", id)
-    .eq("status", "approved")
+    .in("status", ["approved", "expired"])
     .single();
 
   if (error) throw new Error(error.message);

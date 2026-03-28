@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import DealCard from "@/components/deal-card/DealCard";
 import { getProfile, getProfileDeals } from "@/app/actions/profile";
 import CategoryFilter from "@/components/CategoryFilter";
+import { getUser } from "@/app/actions/auth/getUser";
 
 const CATEGORIES = [
   "All",
@@ -24,13 +25,14 @@ export default async function PublicProfilePage({
   const { username } = await params;
   const { category } = await searchParams;
 
-  const profile = await getProfile(username);
+  const [profile, user] = await Promise.all([getProfile(username), getUser()]);
   if (!profile) notFound();
 
   const deals = await getProfileDeals(profile.id, category);
+  const isAdmin = user?.role === "admin";
 
   return (
-    <div className="max-w-2xl mx-auto flex flex-col gap-8">
+    <div className="max-w-200 mx-auto flex flex-col gap-8">
       {/* Profile header */}
       <div className="flex items-center gap-4">
         <Avatar className="w-16 h-16">
@@ -64,7 +66,9 @@ export default async function PublicProfilePage({
       {/* Deals */}
       <div className="flex flex-col gap-3">
         {deals && deals.length > 0 ? (
-          deals.map((deal) => <DealCard key={deal.id} deal={deal} />)
+          deals.map((deal) => (
+            <DealCard key={deal.id} deal={deal} isAdmin={isAdmin} />
+          ))
         ) : (
           <div className="text-center py-20 text-on-surface-variant">
             <p className="text-4xl mb-3">✦</p>

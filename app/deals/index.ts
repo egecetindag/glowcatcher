@@ -1,4 +1,4 @@
-export { glowDeal } from "./glowDeal";
-export { getDeal } from "./getDeal";
-export { getDeals } from "./getDeals";
+export { glowDeal } from "../actions/deals/glowDeal";
+export { getDeal } from "../actions/deals/getDeal";
+export { getDeals } from "../actions/deals/getDeals";
 export { submitDeal } from "./submitDeal";

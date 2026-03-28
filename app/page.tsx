@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import DealCard from "@/components/deal-card/DealCard";
 import CategoryFilter from "@/components/CategoryFilter";
 import { Button } from "@/components/ui/button";
+import { getUser } from "@/app/actions/auth/getUser";
 
 const CATEGORIES = [
   "All",
@@ -40,7 +41,8 @@ export default async function HomePage({
     query = query.order("created_at", { ascending: false });
   }
 
-  const { data: deals } = await query;
+  const [{ data: deals }, user] = await Promise.all([query, getUser()]);
+  const isAdmin = user?.role === "admin";
 
   return (
     <div>
@@ -95,7 +97,7 @@ export default async function HomePage({
         {deals && deals.length > 0 ? (
           <div className="flex flex-col gap-3">
             {deals.map((deal) => (
-              <DealCard key={deal.id} deal={deal} />
+              <DealCard key={deal.id} deal={deal} isAdmin={isAdmin} />
             ))}
           </div>
         ) : (

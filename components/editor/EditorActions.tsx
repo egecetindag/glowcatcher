@@ -34,7 +34,7 @@ export default function EditorActions({ dealId }: { dealId: string }) {
     <div className="flex gap-2">
       <Button
         variant="glow"
-        size="sm"
+        size="lg"
         className="flex-1"
         disabled={!!loading}
         onClick={() => handle("approve")}
@@ -43,20 +43,12 @@ export default function EditorActions({ dealId }: { dealId: string }) {
       </Button>
       <Button
         variant="dewy"
-        size="sm"
+        size="lg"
         className="flex-1"
-        disabled={!!loading}
-        onClick={() => handle("reject")}
-      >
-        {loading === "reject" ? "Rejecting..." : "Reject"}
-      </Button>
-      <Button
-        variant="destructive"
-        size="sm"
         disabled={!!loading}
         onClick={() => handle("delete")}
       >
-        {loading === "delete" ? "..." : "Delete"}
+        {loading === "reject" ? "Rejecting..." : "Reject"}
       </Button>
     </div>
   );

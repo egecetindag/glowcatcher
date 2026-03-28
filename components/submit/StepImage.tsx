@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import type { DealFormData } from "@/app/submit/page";
@@ -23,7 +22,8 @@ export default function StepImage({
   const [scraping, setScraping] = useState(false);
   const [scraped, setScraped] = useState<string[]>([]);
   const [error, setError] = useState("");
-  const [manualUrl, setManualUrl] = useState("");
+  const [dragging, setDragging] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   async function handleScrape() {
     if (!data.url) {
@@ -45,29 +45,37 @@ export default function StepImage({
       const json = await res.json();
 
       if (json.error) {
-        setError(
-          "Could not scrape images from this URL. Try adding one manually.",
-        );
+        setError("Could not scrape images from this URL. Try uploading one from your device.");
       } else if (json.images.length === 0) {
-        setError("No images found on this page. Try adding one manually.");
+        setError("No images found on this page. Try uploading one from your device.");
       } else {
         setScraped(json.images);
       }
     } catch {
-      setError("Something went wrong. Try adding an image URL manually.");
+      setError("Something went wrong. Try uploading an image from your device.");
     } finally {
       setScraping(false);
     }
   }
 
   function handleSelect(img: string) {
-    updateFields({ image_url: img });
+    updateFields({ image_url: img, image_file: null });
   }
 
-  function handleManualAdd() {
-    if (!manualUrl) return;
-    updateFields({ image_url: manualUrl });
-    setManualUrl("");
+  function applyFile(file: File) {
+    updateFields({ image_url: URL.createObjectURL(file), image_file: file });
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) applyFile(file);
+  }
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault();
+    setDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith("image/")) applyFile(file);
   }
 
   return (
@@ -90,7 +98,7 @@ export default function StepImage({
             unoptimized
           />
           <button
-            onClick={() => updateFields({ image_url: "" })}
+            onClick={() => updateFields({ image_url: "", image_file: null })}
             className="absolute top-2 right-2 bg-background border rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-muted transition"
           >
             ✕
@@ -106,7 +114,7 @@ export default function StepImage({
         <div className="flex items-center justify-between">
           <Label>Pick from deal page</Label>
           {data.url && (
-            <p className="text-xs text-muted-foreground truncate max-w-[200px]">
+            <p className="text-xs text-muted-foreground truncate max-w-50">
               {data.url}
             </p>
           )}
@@ -157,32 +165,43 @@ export default function StepImage({
       {/* Divider */}
       <div className="flex items-center gap-3">
         <div className="flex-1 h-px bg-border" />
-        <span className="text-xs text-muted-foreground">or add manually</span>
+        <span className="text-xs text-muted-foreground">or upload from device</span>
         <div className="flex-1 h-px bg-border" />
       </div>
 
-      {/* Manual URL */}
-      <div className="flex flex-col gap-1.5">
-        <Label>Image URL</Label>
-        <div className="flex gap-2">
-          <Input
-            type="url"
-            value={manualUrl}
-            onChange={(e) => setManualUrl(e.target.value)}
-            placeholder="https://..."
-          />
-          <Button variant="glow-outline" onClick={handleManualAdd}>
-            Add
-          </Button>
-        </div>
-      </div>
+      {/* Drag & drop zone */}
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={handleDrop}
+        className={`w-full rounded-xl border-2 border-dashed px-4 py-8 flex flex-col items-center gap-1.5 transition-colors cursor-pointer ${
+          dragging
+            ? "border-amber-400 bg-amber-50"
+            : "border-border hover:border-amber-300 hover:bg-muted/40"
+        }`}
+      >
+        <span className="text-2xl">📁</span>
+        <span className="text-sm font-medium text-on-surface">
+          Drag & drop an image here
+        </span>
+        <span className="text-xs text-muted-foreground">or click to browse</span>
+      </button>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleFileChange}
+      />
 
       <div className="flex gap-3">
         <Button variant="matte" className="w-full" onClick={onBack}>
-          ← Back
+          Back
         </Button>
-        <Button variant="glow" className="w-full" onClick={onNext}>
-          Next →
+        <Button variant="glow" size="lg" className="w-full" onClick={onNext}>
+          Next
         </Button>
       </div>
     </div>

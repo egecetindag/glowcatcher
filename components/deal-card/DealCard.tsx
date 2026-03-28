@@ -2,11 +2,13 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "../ui/button";
 import { formatDistanceToNow } from "date-fns";
 import GlowVote from "./GlowVote";
-import { Button } from "../ui/button";
+import { expireDeal } from "@/app/actions/editor";
 
 type Deal = {
   id: string;
@@ -21,6 +23,7 @@ type Deal = {
   image_url?: string;
   description?: string;
   created_at: string;
+  status?: string;
   profiles?: {
     username: string;
     avatar_url?: string;
@@ -36,8 +39,15 @@ function getGlowRating(score: number) {
   return { label: "Matte", variant: "matte" as const };
 }
 
-export default function DealCard({ deal }: { deal: Deal }) {
+export default function DealCard({
+  deal,
+  isAdmin = false,
+}: {
+  deal: Deal;
+  isAdmin?: boolean;
+}) {
   const router = useRouter();
+  const [expiring, setExpiring] = useState(false);
   const score = deal.glow_count - (deal.down_count ?? 0);
   const rating = getGlowRating(score);
   const discount = deal.original_price
@@ -45,11 +55,22 @@ export default function DealCard({ deal }: { deal: Deal }) {
         ((deal.original_price - deal.price) / deal.original_price) * 100,
       )
     : null;
+  const isExpired = deal.status === "expired";
+
+  async function handleExpire(e: React.MouseEvent) {
+    e.stopPropagation();
+    setExpiring(true);
+    try {
+      await expireDeal(deal.id);
+    } finally {
+      setExpiring(false);
+    }
+  }
 
   return (
     <div
       onClick={() => router.push(`/deals/${deal.id}`)}
-      className="bg-surface-container-lowest rounded-xl overflow-hidden flex cursor-pointer hover:shadow-[0_8px_24px_oklch(0.20_0.04_345/5%)] transition-shadow"
+      className={`bg-surface-container-lowest rounded-xl overflow-hidden flex cursor-pointer hover:shadow-[0_8px_24px_oklch(0.20_0.04_345/5%)] transition-shadow ${isExpired ? "grayscale opacity-60" : ""}`}
     >
       {/* Left — image */}
       <div className="relative w-32 shrink-0 bg-surface-container-low">
@@ -78,6 +99,7 @@ export default function DealCard({ deal }: { deal: Deal }) {
           />
           <Badge variant={rating.variant}>{rating.label}</Badge>
           {discount && <Badge variant="discount">-{discount}%</Badge>}
+          {isExpired && <Badge variant="matte">Expired</Badge>}
           <span className="text-xs text-on-surface-variant ml-auto">
             {formatDistanceToNow(new Date(deal.created_at), {
               addSuffix: true,
@@ -132,7 +154,18 @@ export default function DealCard({ deal }: { deal: Deal }) {
           </p>
         )}
 
-        <div className="mt-auto pt-1 self-end">
+        <div className="mt-auto pt-1 flex items-center gap-2 self-end">
+          {isAdmin && !isExpired && (
+            <Button
+              variant="destructive"
+              size="sm"
+              disabled={expiring}
+              isLoading={expiring}
+              onClick={handleExpire}
+            >
+              Mark as Expired
+            </Button>
+          )}
           <Button
             onClick={(e) => {
               e.stopPropagation();

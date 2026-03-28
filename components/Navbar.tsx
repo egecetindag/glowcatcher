@@ -2,17 +2,21 @@ import Link from "next/link";
 import { getUser } from "@/app/actions/auth/getUser";
 import { Button } from "@/components/ui/button";
 import NavbarUser from "./NavbarUser";
+import SearchBar from "./SearchBar";
 
 export default async function Navbar() {
   const user = await getUser();
 
   return (
-    <nav className="sticky top-0 z-50 bg-surface/80 backdrop-blur-[20px]">
-      <div className="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link href="/" className="text-lg font-semibold text-primary tracking-tight">
+    <nav className="sticky top-0 z-50 backdrop-blur-[20px] bg-white shadow-sm ">
+      <div className="max-w-200 mx-auto px-4 h-14 flex items-center justify-between">
+        <Link
+          href="/"
+          className="text-lg font-semibold text-primary tracking-tight whitespace-nowrap"
+        >
           ✦ GlowCatcher
         </Link>
-
+        <SearchBar />
         {user ? (
           <NavbarUser user={user} />
         ) : (

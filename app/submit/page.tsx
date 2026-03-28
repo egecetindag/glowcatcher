@@ -14,6 +14,7 @@ export type DealFormData = {
   url: string;
   voucher_code: string;
   image_url: string;
+  image_file: File | null;
   description: string;
   category: string;
   expires_at: string;
@@ -27,6 +28,7 @@ const INITIAL_DATA: DealFormData = {
   url: "",
   voucher_code: "",
   image_url: "",
+  image_file: null,
   description: "",
   category: "",
   expires_at: "",

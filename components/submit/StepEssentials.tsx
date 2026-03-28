@@ -46,7 +46,7 @@ export default function StepEssentials({ data, updateFields, onNext }: Props) {
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="price">
-              Price <span className="text-pink-500">*</span>
+              Deal Price <span className="text-pink-500">*</span>
             </Label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
@@ -66,7 +66,7 @@ export default function StepEssentials({ data, updateFields, onNext }: Props) {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="original_price">Original price</Label>
+            <Label htmlFor="original_price">RRP</Label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
                 £
@@ -123,8 +123,14 @@ export default function StepEssentials({ data, updateFields, onNext }: Props) {
         </div>
       </div>
 
-      <Button variant="glow" className="w-full" onClick={handleNext}>
-        Next →
+      <Button
+        variant="glow"
+        size="lg"
+        className="w-full"
+        onClick={handleNext}
+        disabled={!data.title || !data.price || !data.store || !data.url}
+      >
+        Next
       </Button>
     </div>
   );

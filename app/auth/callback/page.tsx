@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 
 export default function CallbackPage() {
   const router = useRouter();
-
   useEffect(() => {
     const supabase = createClient();
     const params = new URLSearchParams(window.location.search);
@@ -15,10 +14,7 @@ export default function CallbackPage() {
 
     if (code && type === "signup") {
       supabase.auth
-        .verifyOtp({
-          token_hash: code,
-          type: "signup",
-        })
+        .verifyOtp({ token_hash: code, type: "signup" })
         .then(({ error }) => {
           if (!error) {
             router.push("/profile/setup");
@@ -27,6 +23,15 @@ export default function CallbackPage() {
             router.push("/auth/login");
           }
         });
+    } else if (code && !type) {
+      supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
+        if (!error) {
+          router.push("/");
+          router.refresh();
+        } else {
+          router.push("/auth/login");
+        }
+      });
     }
   }, [router]);
 

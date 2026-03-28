@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { submitDeal } from "@/app/deals/submitDeal";
 import type { DealFormData } from "@/app/submit/page";
+import { useState } from "react";
 
 const CATEGORIES = [
   "Skincare",
@@ -21,10 +22,16 @@ type Props = {
 };
 
 export default function StepDetails({ data, updateFields, onBack }: Props) {
+  const [pending, setPending] = useState(false);
+
   async function handleSubmit() {
+    setPending(true);
     const formData = new FormData();
-    Object.entries(data).forEach(([k, v]) => formData.append(k, v));
+    Object.entries(data).forEach(([k, v]) => {
+      if (v !== null) formData.append(k, v as string | File);
+    });
     await submitDeal(formData);
+    setPending(false);
   }
 
   return (
@@ -83,14 +90,16 @@ export default function StepDetails({ data, updateFields, onBack }: Props) {
       </div>
 
       <div className="flex gap-3">
-        <Button variant="matte" className="w-full" onClick={onBack}>
-          ← Back
+        <Button variant="matte" className="w-full" onClick={onBack} size="lg">
+          Back
         </Button>
         <Button
           variant="glow"
           className="w-full"
           onClick={handleSubmit}
           disabled={!data.category}
+          size="lg"
+          isLoading={pending}
         >
           Submit deal ✦
         </Button>

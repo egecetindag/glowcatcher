@@ -1,4 +1,4 @@
-import { getDeal } from "@/app/deals/getDeal";
+import { getDeal } from "@/app/actions/deals/getDeal";
 import { getComments } from "@/app/actions/comments";
 import { getUser } from "@/app/actions/auth/getUser";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +9,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
 import CommentSection from "@/components/comments/CommentsSection";
+import ExpireButton from "@/components/deal-card/ExpireButton";
+import ActivateButton from "@/components/deal-card/ActivateButton";
 
 export default async function DealPage({ params }: { params: { id: string } }) {
   const { id } = await params;
@@ -20,6 +22,8 @@ export default async function DealPage({ params }: { params: { id: string } }) {
 
   if (!deal) notFound();
 
+  const isExpired = deal.status === "expired";
+  const isAdmin = user?.role === "admin";
   const score = deal.glow_count - (deal.down_count ?? 0);
   const discount = deal.original_price
     ? Math.round(
@@ -28,9 +32,11 @@ export default async function DealPage({ params }: { params: { id: string } }) {
     : null;
 
   return (
-    <div className="max-w-2xl mx-auto flex flex-col gap-8">
+    <div className="max-w-200 mx-auto flex flex-col gap-8">
       {/* Deal card */}
-      <div className="bg-surface-container-lowest rounded-2xl overflow-hidden">
+      <div
+        className={`bg-surface-container-lowest rounded-2xl overflow-hidden ${isExpired ? "grayscale opacity-60" : ""}`}
+      >
         {/* Image */}
         {deal.image_url && (
           <div className="relative w-full aspect-video bg-surface-container-low">
@@ -53,6 +59,7 @@ export default async function DealPage({ params }: { params: { id: string } }) {
               initialDown={deal.down_count ?? 0}
             />
             {discount && <Badge variant="discount">-{discount}%</Badge>}
+            {isExpired && <Badge variant="matte">Expired</Badge>}
             <span className="text-xs text-on-surface-variant ml-auto">
               {formatDistanceToNow(new Date(deal.created_at), {
                 addSuffix: true,
@@ -119,8 +126,10 @@ export default async function DealPage({ params }: { params: { id: string } }) {
               Get deal →
             </Link>
           </Button>
+          {isAdmin && !isExpired && <ExpireButton dealId={deal.id} />}
         </div>
       </div>
+      {isAdmin && isExpired && <ActivateButton dealId={deal.id} />}
 
       {/* Comments */}
       <CommentSection
