@@ -49,6 +49,12 @@ export default function NavbarUser({ user }: { user: CurrentUser }) {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
+            <Link href="/alerts" className="flex items-center gap-2">
+              <i className="fi fi-rr-bell text-sm leading-none" />
+              Alerts
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link href={`/profile${user.username ? `/${user.username}` : ""}`}>
               <i className="fi fi-rr-user text-sm leading-none" />
               Profile Settings

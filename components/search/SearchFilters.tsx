@@ -8,7 +8,7 @@ const CATEGORIES = [
   "Haircare",
   "Fragrance",
   "Tools",
-  "Body",
+  "Health",
 ];
 
 const SORT_OPTIONS = [

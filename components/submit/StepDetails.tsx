@@ -12,7 +12,7 @@ const CATEGORIES = [
   "Haircare",
   "Fragrance",
   "Tools",
-  "Body",
+  "Health",
 ];
 
 type Props = {

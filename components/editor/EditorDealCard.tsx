@@ -35,7 +35,7 @@ const CATEGORIES = [
   "Haircare",
   "Fragrance",
   "Tools",
-  "Body",
+  "Health",
 ];
 
 export default function EditorDealCard({ deal }: { deal: Deal }) {
@@ -92,7 +92,9 @@ export default function EditorDealCard({ deal }: { deal: Deal }) {
       if (error) {
         setUploadError(error.message);
       } else {
-        const { data } = supabase.storage.from("deal-images").getPublicUrl(path);
+        const { data } = supabase.storage
+          .from("deal-images")
+          .getPublicUrl(path);
         set("image_url", data.publicUrl);
         setUploadError("");
       }

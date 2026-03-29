@@ -13,7 +13,6 @@ export default function CategoryFilter({
   basePath?: string;
 }) {
   const router = useRouter();
-  console.log("base", basePath);
   return (
     <div className="flex gap-2 flex-wrap">
       {categories.map((cat) => (

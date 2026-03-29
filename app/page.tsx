@@ -3,7 +3,6 @@ import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import DealCard from "@/components/deal-card/DealCard";
 import CategoryFilter from "@/components/CategoryFilter";
-import { Button } from "@/components/ui/button";
 import { getUser } from "@/app/actions/auth/getUser";
 
 const CATEGORIES = [
@@ -13,7 +12,7 @@ const CATEGORIES = [
   "Haircare",
   "Fragrance",
   "Tools",
-  "Body",
+  "Health",
 ];
 
 export default async function HomePage({
