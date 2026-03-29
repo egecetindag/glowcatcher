@@ -21,10 +21,20 @@ export default async function Navbar() {
           <NavbarUser user={user} />
         ) : (
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className="whitespace-nowrap"
+            >
               <Link href="/auth/register">Sign up</Link>
             </Button>
-            <Button variant="glow" size="sm" asChild>
+            <Button
+              variant="glow"
+              size="sm"
+              asChild
+              className="whitespace-nowrap"
+            >
               <Link href="/auth/login">Sign in</Link>
             </Button>
           </div>
