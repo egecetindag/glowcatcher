@@ -10,6 +10,7 @@ export async function getDeals(category?: string) {
     .from("deals")
     .select("*")
     .eq("status", "approved")
+    .order("created_at", { ascending: false })
     .order("glow_count", { ascending: false });
 
   if (category && category !== "All") {

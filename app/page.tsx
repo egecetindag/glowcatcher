@@ -24,8 +24,7 @@ export default async function HomePage({
   const cookieStore = await cookies();
   const supabase = await createClient(cookieStore);
 
-  const { category, tab = "most-glowing" } = await searchParams;
-
+  const { category, tab = "all" } = await searchParams;
   let query = supabase
     .from("deals")
     .select("*, profiles(username, avatar_url)")
