@@ -11,6 +11,45 @@ import { formatDistanceToNow } from "date-fns";
 import CommentSection from "@/components/comments/CommentsSection";
 import ExpireButton from "@/components/deal-card/ExpireButton";
 import ActivateButton from "@/components/deal-card/ActivateButton";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const deal = await getDeal(id);
+  if (!deal) return {};
+
+  const description = deal.description
+    ? deal.description.slice(0, 160)
+    : `${deal.store} · £${deal.price}${deal.original_price ? ` (was £${deal.original_price})` : ""}`;
+
+  return {
+    title: `${deal.title} — GlowCatcher`,
+    description,
+    openGraph: {
+      title: deal.title,
+      description,
+      url: `https://glowcatcher.co.uk/deals/${id}`,
+      siteName: "GlowCatcher",
+      ...(deal.image_url && {
+        images: [
+          { url: deal.image_url, width: 1200, height: 630, alt: deal.title },
+        ],
+      }),
+      type: "website",
+    },
+    twitter: {
+      card: deal.image_url ? "summary_large_image" : "summary",
+      title: deal.title,
+      description,
+      ...(deal.image_url && { images: [deal.image_url] }),
+      site: "@glowcatcheruk",
+    },
+  };
+}
 
 export default async function DealPage({ params }: { params: { id: string } }) {
   const { id } = await params;
