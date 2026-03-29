@@ -1,8 +1,8 @@
 import { signIn } from "@/app/actions/auth/signIn";
 // import { signInWithOAuth } from "@/app/actions/auth/signInWithOAuth";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import SubmitButton from "@/components/auth/SubmitButton";
 
 export default function LoginPage() {
   return (
@@ -61,14 +61,7 @@ export default function LoginPage() {
               />
             </div>
 
-            <Button
-              variant="glow"
-              size="lg"
-              className="w-full uppercase tracking-widest mt-1"
-              type="submit"
-            >
-              Sign In
-            </Button>
+            <SubmitButton label="Sign In" />
           </form>
 
           {/* Divider */}

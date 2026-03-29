@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, Noto_Serif } from "next/font/google";
 import { Separator } from "@/components/ui/separator";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/nuxt/runtime";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -39,7 +40,10 @@ export default function RootLayout({
 
       <body>
         <Navbar />
-        <main className="max-w-200 mx-auto px-4 py-8">{children}</main>
+        <main className="max-w-200 mx-auto px-4 py-8">
+          {children}
+          <Analytics />
+        </main>
         <Separator />
         <footer className="max-w-200 mx-auto px-4 py-6">
           <p className="text-xs text-on-surface-variant text-center">

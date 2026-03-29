@@ -1,7 +1,7 @@
 import { signUp } from "@/app/actions/auth/signUp";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import SubmitButton from "@/components/auth/SubmitButton";
 
 export default function RegisterPage() {
   return (
@@ -72,14 +72,7 @@ export default function RegisterPage() {
               />
             </div>
 
-            <Button
-              variant="glow"
-              size="lg"
-              className="w-full uppercase tracking-widest mt-1"
-              type="submit"
-            >
-              Create Account
-            </Button>
+            <SubmitButton label="Create Account" />
           </form>
 
           <p className="text-sm text-on-surface-variant text-center mt-6">

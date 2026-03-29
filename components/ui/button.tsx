@@ -65,7 +65,7 @@ function Button({
     >
       {isLoading ? (
         <span className="flex items-center gap-2">
-          <i className="fi fi-rr-spinner animate-spin text-sm leading-none" />
+          <i className="fi fi-rr-spinner animate-spin inline-block w-[1em] h-[1em] leading-none align-middle" />
           {props.children}
         </span>
       ) : (
