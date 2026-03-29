@@ -16,7 +16,10 @@ export default async function Navbar() {
         >
           ✦ GlowCatcher
         </Link>
-        <SearchBar />
+        <div className="max-md:hidden mr-4 ml-6 w-full">
+          <SearchBar />
+        </div>
+
         {user ? (
           <NavbarUser user={user} />
         ) : (
@@ -39,6 +42,9 @@ export default async function Navbar() {
             </Button>
           </div>
         )}
+      </div>
+      <div className="w-full mx-auto px-4 py-2 md:hidden">
+        <SearchBar />
       </div>
     </nav>
   );

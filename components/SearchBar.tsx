@@ -27,7 +27,7 @@ export default function SearchBar() {
   }
 
   return (
-    <div ref={ref} className="relative w-full mx-4">
+    <div ref={ref} className="relative w-full">
       <form onSubmit={handleSearch}>
         <div className="flex items-center gap-2 bg-surface-container-low rounded-full px-4 py-2">
           <i className="fi fi-rr-search text-sm text-on-surface-variant leading-none" />
