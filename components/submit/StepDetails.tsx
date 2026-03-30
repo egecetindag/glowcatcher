@@ -5,15 +5,7 @@ import { Input } from "@/components/ui/input";
 import { submitDeal } from "@/app/deals/submitDeal";
 import type { DealFormData } from "@/app/submit/page";
 import { useState } from "react";
-
-const CATEGORIES = [
-  "Skincare",
-  "Makeup",
-  "Haircare",
-  "Fragrance",
-  "Tools",
-  "Health",
-];
+import { CATEGORIES } from "@/app/actions/types";
 
 type Props = {
   data: DealFormData;

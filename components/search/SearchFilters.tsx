@@ -1,15 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-
-const CATEGORIES = [
-  "Skincare",
-  "Makeup",
-  "Haircare",
-  "Fragrance",
-  "Tools",
-  "Health",
-];
+import { CATEGORIES } from "@/app/actions/types";
 
 const SORT_OPTIONS = [
   { value: "votes", label: "Most voted" },

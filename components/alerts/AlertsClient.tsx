@@ -6,15 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createAlert, deleteAlert } from "@/app/actions/alerts/createAlert";
 import { Badge } from "@/components/ui/badge";
-
-const CATEGORIES = [
-  "Skincare",
-  "Makeup",
-  "Haircare",
-  "Fragrance",
-  "Tools",
-  "Health",
-];
+import { CATEGORIES } from "@/app/actions/types";
 
 export default function AlertsClient({ alerts }: { alerts: any[] }) {
   const [loading, setLoading] = useState(false);

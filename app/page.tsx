@@ -4,16 +4,7 @@ import CategoryFilter from "@/components/CategoryFilter";
 import { getUser } from "@/app/actions/auth/getUser";
 import { getDeals } from "@/app/actions/deals/getDeals";
 import { getUserVotes } from "@/app/actions/deals/getUserVotes";
-
-const CATEGORIES = [
-  "All",
-  "Skincare",
-  "Makeup",
-  "Haircare",
-  "Fragrance",
-  "Tools",
-  "Health",
-];
+import { CATEGORIES } from "@/app/actions/types";
 
 export default async function HomePage({
   searchParams,

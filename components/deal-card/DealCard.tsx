@@ -51,6 +51,7 @@ export default function DealCard({
 }) {
   const router = useRouter();
   const [expiring, setExpiring] = useState(false);
+  const [isExpired, setIsExpired] = useState(deal.status === "expired");
   const score = deal.glow_count - (deal.down_count ?? 0);
   const rating = getGlowRating(score);
   const discount = deal.original_price
@@ -58,13 +59,14 @@ export default function DealCard({
         ((deal.original_price - deal.price) / deal.original_price) * 100,
       )
     : null;
-  const isExpired = deal.status === "expired";
 
   async function handleExpire(e: React.MouseEvent) {
     e.stopPropagation();
     setExpiring(true);
     try {
-      await expireDeal(deal.slug);
+      await expireDeal(deal?.id);
+      setIsExpired(true);
+      router.refresh();
     } finally {
       setExpiring(false);
     }
@@ -73,7 +75,7 @@ export default function DealCard({
   return (
     <div
       onClick={() => router.push(`/deals/${deal.slug}`)}
-      className={`bg-surface-container-lowest rounded-xl overflow-hidden flex cursor-pointer hover:shadow-[0_8px_24px_oklch(0.20_0.04_345/5%)] transition-shadow ${isExpired ? "grayscale opacity-60" : ""}`}
+      className={`bg-surface-container-lowest  relative rounded-xl overflow-hidden flex cursor-pointer hover:shadow-[0_8px_24px_oklch(0.20_0.04_345/5%)] transition-shadow ${isExpired ? "grayscale opacity-60" : ""}`}
     >
       {/* Left — image */}
       <div className="relative w-32 shrink-0 bg-surface-container-low">
@@ -101,7 +103,7 @@ export default function DealCard({
             initialDown={deal.down_count ?? 0}
             initialVote={initialVote}
           />
-          <Badge variant={rating.variant}>{rating.label}</Badge>
+          <Badge variant="dewy">{deal?.category}</Badge>
           {discount && <Badge variant="discount">-{discount}%</Badge>}
           {isExpired && <Badge variant="matte">Expired</Badge>}
           <span className="text-xs text-on-surface-variant ml-auto">

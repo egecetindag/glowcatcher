@@ -4,16 +4,7 @@ import DealCard from "@/components/deal-card/DealCard";
 import { getProfile, getProfileDeals } from "@/app/actions/profile";
 import CategoryFilter from "@/components/CategoryFilter";
 import { getUser } from "@/app/actions/auth/getUser";
-
-const CATEGORIES = [
-  "All",
-  "Skincare",
-  "Makeup",
-  "Haircare",
-  "Fragrance",
-  "Tools",
-  "Health",
-];
+import { CATEGORIES } from "@/app/actions/types";
 
 export default async function PublicProfilePage({
   params,

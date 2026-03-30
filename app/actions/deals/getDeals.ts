@@ -14,7 +14,7 @@ export async function getDeals(category?: string, tab?: string, page = 0) {
   let query = supabase
     .from("deals")
     .select("*, profiles(username, avatar_url)")
-    .eq("status", "approved");
+    .in("status", ["approved", "expired"]);
 
   if (category && category !== "All") {
     query = query.eq("category", category);

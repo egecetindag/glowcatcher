@@ -13,6 +13,7 @@ import ExpireButton from "@/components/deal-card/ExpireButton";
 import ActivateButton from "@/components/deal-card/ActivateButton";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/client";
+import DealCardAdminOverlay from "@/components/deal-card/DealCardAdminOverlay";
 const uuidRegex =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -119,7 +120,7 @@ export default async function DealPage({
         >
           {/* Image */}
           {deal.image_url && (
-            <div className="relative w-full aspect-video bg-surface-container-low">
+            <div className="relative w-full aspect-video bg-surface-container-low group">
               <Image
                 src={deal.image_url}
                 alt={deal.title}
@@ -127,6 +128,7 @@ export default async function DealPage({
                 className="object-contain"
                 unoptimized
               />
+              {isAdmin && <DealCardAdminOverlay slug={deal.slug} />}
             </div>
           )}
 
