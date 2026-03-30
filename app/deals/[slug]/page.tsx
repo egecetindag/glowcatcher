@@ -6,20 +6,23 @@ import { Button } from "@/components/ui/button";
 import GlowVote from "@/components/deal-card/GlowVote";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
 import CommentSection from "@/components/comments/CommentsSection";
 import ExpireButton from "@/components/deal-card/ExpireButton";
 import ActivateButton from "@/components/deal-card/ActivateButton";
 import type { Metadata } from "next";
+import { createClient } from "@/lib/supabase/client";
+const uuidRegex =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { id } = await params;
-  const deal = await getDeal(id);
+  const { slug } = await params;
+  const deal = await getDeal(slug);
   if (!deal) return {};
 
   const description = deal.description
@@ -32,7 +35,7 @@ export async function generateMetadata({
     openGraph: {
       title: deal.title,
       description,
-      url: `https://glowcatcher.co.uk/deals/${id}`,
+      url: `https://glowcatcher.co.uk/deals/${slug}`,
       siteName: "GlowCatcher",
       ...(deal.image_url && {
         images: [
@@ -51,16 +54,30 @@ export async function generateMetadata({
   };
 }
 
-export default async function DealPage({ params }: { params: { id: string } }) {
-  const { id } = await params;
-  const [deal, comments, user] = await Promise.all([
-    getDeal(id),
-    getComments(id),
-    getUser(),
-  ]);
+export default async function DealPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const { slug } = await params;
+  // / Eski UUID link gelirse slug'a yönlendir
+  if (uuidRegex.test(slug)) {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("deals")
+      .select("slug")
+      .eq("id", slug)
+      .single();
+
+    if (data?.slug) {
+      redirect(`/deals/${data.slug}`);
+    }
+  }
+  const [deal] = await Promise.all([getDeal(slug)]);
 
   if (!deal) notFound();
 
+  const [comments, user] = await Promise.all([getComments(deal.id), getUser()]);
   const isExpired = deal.status === "expired";
   const isAdmin = user?.role === "admin";
   const score = deal.glow_count - (deal.down_count ?? 0);

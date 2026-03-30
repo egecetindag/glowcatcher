@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import Providers from "@/lib/providers";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -40,32 +41,34 @@ export default function RootLayout({
       </head>
 
       <body>
-        <Navbar />
-        <main className="max-w-200 mx-auto px-4 py-8">
-          {children}
-          <Analytics />
-        </main>
-        <Separator />
-        <footer className="max-w-200 mx-auto px-4 py-6 flex flex-col items-center gap-2">
-          <div className="flex items-center gap-4 text-xs text-on-surface-variant">
-            <Link
-              href="/privacy-policy"
-              className="hover:text-on-surface transition-colors"
-            >
-              Privacy Policy
-            </Link>
-            <span>·</span>
-            <Link
-              href="/cookie-policy"
-              className="hover:text-on-surface transition-colors"
-            >
-              Cookie Policy
-            </Link>
-          </div>
-          <p className="text-xs text-on-surface-variant">
-            © 2025 GlowCatcher · Beauty deals for the UK community
-          </p>
-        </footer>
+        <Providers>
+          <Navbar />
+          <main className="max-w-200 mx-auto px-4 py-8">
+            {children}
+            <Analytics />
+          </main>
+          <Separator />
+          <footer className="max-w-200 mx-auto px-4 py-6 flex flex-col items-center gap-2">
+            <div className="flex items-center gap-4 text-xs text-on-surface-variant">
+              <Link
+                href="/privacy-policy"
+                className="hover:text-on-surface transition-colors"
+              >
+                Privacy Policy
+              </Link>
+              <span>·</span>
+              <Link
+                href="/cookie-policy"
+                className="hover:text-on-surface transition-colors"
+              >
+                Cookie Policy
+              </Link>
+            </div>
+            <p className="text-xs text-on-surface-variant">
+              © 2025 GlowCatcher · Beauty deals for the UK community
+            </p>
+          </footer>
+        </Providers>
       </body>
     </html>
   );

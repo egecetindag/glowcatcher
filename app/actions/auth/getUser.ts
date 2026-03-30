@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
+import { cache } from "react";
 
 export type CurrentUser = {
   id: string;
@@ -12,7 +13,7 @@ export type CurrentUser = {
   profile_completed?: boolean;
 };
 
-export async function getUser(): Promise<CurrentUser | null> {
+export const getUser = cache(async function getUser(): Promise<CurrentUser | null> {
   const cookieStore = await cookies();
   const supabase = await createClient(cookieStore);
 
@@ -32,4 +33,4 @@ export async function getUser(): Promise<CurrentUser | null> {
     email: user.email,
     ...profile,
   };
-}
+});

@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
-import { cookies } from "next/headers";
-import DealCard from "@/components/deal-card/DealCard";
+import DealFeed from "@/components/deal-feed/DealFeed";
 import CategoryFilter from "@/components/CategoryFilter";
 import { getUser } from "@/app/actions/auth/getUser";
+import { getDeals } from "@/app/actions/deals/getDeals";
+import { getUserVotes } from "@/app/actions/deals/getUserVotes";
 
 const CATEGORIES = [
   "All",
@@ -20,35 +20,21 @@ export default async function HomePage({
 }: {
   searchParams: Promise<{ category?: string; tab?: string }>;
 }) {
-  const cookieStore = await cookies();
-  const supabase = await createClient(cookieStore);
-
   const { category, tab = "all" } = await searchParams;
-  let query = supabase
-    .from("deals")
-    .select("*, profiles(username, avatar_url)")
-    .eq("status", "approved");
 
-  if (category && category !== "All") {
-    query = query.eq("category", category);
-  }
-
-  if (tab === "most-glowing") {
-    query = query.order("glow_count", { ascending: false });
-  } else {
-    query = query.order("created_at", { ascending: false });
-  }
-
-  const [{ data: deals }, user] = await Promise.all([query, getUser()]);
+  const [deals, user] = await Promise.all([
+    getDeals(category, tab, 0),
+    getUser(),
+  ]);
   const isAdmin = user?.role === "admin";
+
+  const voteMap =
+    deals.length > 0 ? await getUserVotes(deals.map((d) => d.id)) : {};
 
   return (
     <div>
       {/* Hero */}
       <section className="mb-10 pt-4">
-        {/* <p className="text-xs font-medium uppercase tracking-widest text-on-surface-variant mb-3">
-          Editor&apos;s Choice
-        </p> */}
         <h1 className="font-serif text-4xl font-bold text-on-surface leading-tight mb-3">
           Radiance is just
           <br />a deal away.
@@ -56,9 +42,6 @@ export default async function HomePage({
         <p className="text-on-surface-variant text-sm mb-6 max-w-xs leading-relaxed">
           Discover the best beauty offers!
         </p>
-        {/* <Button variant="glow" size="lg" asChild>
-          <Link href="#deals">Explore Trending</Link>
-        </Button> */}
       </section>
 
       {/* Category filter */}
@@ -92,12 +75,15 @@ export default async function HomePage({
 
       {/* Deals feed */}
       <div id="deals" className="bg-surface-container-low rounded-2xl p-4">
-        {deals && deals.length > 0 ? (
-          <div className="flex flex-col gap-3">
-            {deals.map((deal) => (
-              <DealCard key={deal.id} deal={deal} isAdmin={isAdmin} />
-            ))}
-          </div>
+        {deals.length > 0 ? (
+          <DealFeed
+            key={`${category ?? "all"}-${tab ?? "most-glowing"}`}
+            initialDeals={deals}
+            initialVotes={voteMap}
+            isAdmin={isAdmin}
+            category={category}
+            tab={tab}
+          />
         ) : (
           <div className="text-center py-20 text-on-surface-variant">
             <p className="text-4xl mb-3">✦</p>

@@ -12,6 +12,7 @@ import { expireDeal } from "@/app/actions/editor";
 
 type Deal = {
   id: string;
+  slug: string;
   title: string;
   store: string;
   url: string;
@@ -42,9 +43,11 @@ function getGlowRating(score: number) {
 export default function DealCard({
   deal,
   isAdmin = false,
+  initialVote = null,
 }: {
   deal: Deal;
   isAdmin?: boolean;
+  initialVote?: "up" | "down" | null;
 }) {
   const router = useRouter();
   const [expiring, setExpiring] = useState(false);
@@ -61,7 +64,7 @@ export default function DealCard({
     e.stopPropagation();
     setExpiring(true);
     try {
-      await expireDeal(deal.id);
+      await expireDeal(deal.slug);
     } finally {
       setExpiring(false);
     }
@@ -69,7 +72,7 @@ export default function DealCard({
 
   return (
     <div
-      onClick={() => router.push(`/deals/${deal.id}`)}
+      onClick={() => router.push(`/deals/${deal.slug}`)}
       className={`bg-surface-container-lowest rounded-xl overflow-hidden flex cursor-pointer hover:shadow-[0_8px_24px_oklch(0.20_0.04_345/5%)] transition-shadow ${isExpired ? "grayscale opacity-60" : ""}`}
     >
       {/* Left — image */}
@@ -96,6 +99,7 @@ export default function DealCard({
             dealId={deal.id}
             initialUp={deal.glow_count}
             initialDown={deal.down_count ?? 0}
+            initialVote={initialVote}
           />
           <Badge variant={rating.variant}>{rating.label}</Badge>
           {discount && <Badge variant="discount">-{discount}%</Badge>}

@@ -1,42 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 export default function GlowVote({
   dealId,
   initialUp,
   initialDown,
+  initialVote = null,
 }: {
   dealId: string;
   initialUp: number;
   initialDown: number;
+  initialVote?: "up" | "down" | null;
 }) {
   const [up, setUp] = useState(initialUp);
   const [down, setDown] = useState(initialDown);
-  const [vote, setVote] = useState<"up" | "down" | null>(null);
+  const [vote, setVote] = useState<"up" | "down" | null>(initialVote);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    async function fetchUserVote() {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) return;
-
-      const { data } = await supabase
-        .from("glows")
-        .select("type")
-        .eq("deal_id", dealId)
-        .eq("user_id", user.id)
-        .single();
-
-      if (data) setVote(data.type as "up" | "down");
-    }
-
-    fetchUserVote();
-  }, [dealId]);
 
   const score = up - down;
 
