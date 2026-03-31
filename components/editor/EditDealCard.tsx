@@ -10,7 +10,7 @@ import { createClient } from "@/lib/supabase/client";
 import { CATEGORIES, Deal } from "@/app/actions/types";
 import { useRouter } from "next/navigation";
 
-export default function EditorDealCard({ deal }: { deal: Deal }) {
+export default function EditDealCard({ deal }: { deal: Deal }) {
   const router = useRouter();
   const [loading, setLoading] = useState<
     "approve" | "reject" | "delete" | "save" | null

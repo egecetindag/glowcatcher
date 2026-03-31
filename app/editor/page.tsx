@@ -1,5 +1,5 @@
 import { getPendingDeals } from "@/app/actions/editor";
-import EditorDealCard from "@/components/editor/EditDealCard";
+import EditorDealCard from "@/components/editor/EditorDealCard";
 
 export default async function EditorPage() {
   const deals = await getPendingDeals();
