@@ -26,11 +26,11 @@ export default async function HomePage({
     <div>
       {/* Hero */}
       <section className="mb-10 pt-4">
-        <h1 className="font-serif text-4xl font-bold text-on-surface leading-tight mb-3">
+        <h1 className="font-serif text-4xl font-bold text-on-surface leading-tight">
           Radiance is just
           <br />a deal away.
         </h1>
-        <p className="text-on-surface-variant text-sm mb-6 max-w-xs leading-relaxed">
+        <p className="text-on-surface-variant text-sm mb-3 max-w-xs leading-relaxed">
           Discover the best beauty offers!
         </p>
       </section>
