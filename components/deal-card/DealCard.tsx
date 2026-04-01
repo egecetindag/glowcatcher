@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
 import { formatDistanceToNow } from "date-fns";
 import GlowVote from "./GlowVote";
+import VoucherCode from "./VoucherCode";
 import { expireDeal } from "@/app/actions/editor";
 
 type Deal = {
@@ -25,6 +26,7 @@ type Deal = {
   description?: string;
   created_at: string;
   status?: string;
+  voucher_code?: string;
   profiles?: {
     username: string;
     avatar_url?: string;
@@ -160,11 +162,12 @@ export default function DealCard({
           </p>
         )}
 
-        <div className="mt-auto pt-1 flex items-center gap-2 self-end">
+        <div className="mt-auto pt-1 flex items-center gap-2 self-end flex-wrap-reverse">
           {isAdmin && !isExpired && (
             <Button
               variant="destructive"
               size="sm"
+              className="max-md:w-full"
               disabled={expiring}
               isLoading={expiring}
               onClick={handleExpire}
@@ -172,15 +175,19 @@ export default function DealCard({
               Mark as Expired
             </Button>
           )}
-          <Button
-            onClick={(e) => {
-              e.stopPropagation();
-              window.open(deal.url, "_blank", "noopener,noreferrer");
-            }}
-            className="inline-flex items-center gap-1.5 text-xs font-medium"
-          >
-            Get The Deal →
-          </Button>
+          <div className="flex gap-2 max-md:w-full max-md:flex-wrap justify-center items-center">
+            {deal?.voucher_code && <VoucherCode code={deal.voucher_code} />}
+
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                window.open(deal.url, "_blank", "noopener,noreferrer");
+              }}
+              className="inline-flex max-md:flex-1 whitespace-nowrap items-center gap-1.5 text-xs font-medium"
+            >
+              Get The Deal
+            </Button>
+          </div>
         </div>
       </div>
     </div>

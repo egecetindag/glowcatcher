@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, Noto_Serif } from "next/font/google";
 import { Separator } from "@/components/ui/separator";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
+import Script from "next/script";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import Providers from "@/lib/providers";
@@ -69,6 +70,10 @@ export default function RootLayout({
             </p>
           </footer>
         </Providers>
+        <Script
+          src="https://s.skimresources.com/js/300849X1788721.skimlinks.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

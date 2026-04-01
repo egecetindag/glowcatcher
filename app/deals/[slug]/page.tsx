@@ -10,6 +10,7 @@ import { notFound, redirect } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
 import CommentSection from "@/components/comments/CommentsSection";
 import ExpireButton from "@/components/deal-card/ExpireButton";
+import VoucherCode from "@/components/deal-card/VoucherCode";
 import ActivateButton from "@/components/deal-card/ActivateButton";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/client";
@@ -170,11 +171,7 @@ export default async function DealPage({
             <div className="flex items-center gap-3 text-sm text-on-surface-variant flex-wrap">
               <span className="font-medium text-on-surface">{deal.store}</span>
               {deal.category && <Badge variant="matte">{deal.category}</Badge>}
-              {deal.voucher_code && (
-                <span className="font-mono bg-surface-container-low px-2 py-0.5 rounded text-xs">
-                  {deal.voucher_code}
-                </span>
-              )}
+
               {deal.expires_at && (
                 <span className="text-xs">
                   Expires{" "}
@@ -184,6 +181,12 @@ export default async function DealPage({
                 </span>
               )}
             </div>
+            {deal.voucher_code && (
+              <div className="flex items-center">
+                <div className="text-base mr-2">USE CODE:</div>{" "}
+                <VoucherCode code={deal.voucher_code} />{" "}
+              </div>
+            )}
 
             {/* Posted by */}
             {deal.profiles && (
