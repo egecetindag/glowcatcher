@@ -126,8 +126,8 @@ export default async function DealPage({
                 src={deal.image_url}
                 alt={deal.title}
                 fill
+                sizes="(max-width: 768px) 100vw, 800px"
                 className="object-contain"
-                unoptimized
               />
               {isAdmin && <DealCardAdminOverlay slug={deal.slug} />}
             </div>

@@ -86,8 +86,8 @@ export default function DealCard({
             src={deal.image_url}
             alt={deal.title}
             fill
+            sizes="128px"
             className="object-cover"
-            unoptimized
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-2xl text-on-surface-variant">
