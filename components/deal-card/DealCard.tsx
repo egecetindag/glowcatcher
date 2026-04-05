@@ -181,6 +181,11 @@ export default function DealCard({
             <Button
               onClick={(e) => {
                 e.stopPropagation();
+                window?.gtag?.("event", "click_deal", {
+                  deal_title: deal.title,
+                  deal_store: deal.store,
+                  deal_url: deal.url,
+                });
                 window.open(deal.url, "_blank", "noopener,noreferrer");
               }}
               className="inline-flex max-md:flex-1 whitespace-nowrap items-center gap-1.5 text-xs font-medium"

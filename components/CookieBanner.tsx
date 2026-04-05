@@ -24,14 +24,9 @@ export default function CookieBanner() {
     window.location.reload();
   }
 
-  function decline() {
-    localStorage.setItem("cookie_consent", "declined");
-    window.location.reload();
-  }
-
   return (
     <>
-      {consent === "accepted" && (
+      {consent === "accepted" && process.env.NODE_ENV === "production" && (
         <>
           <Script
             src="https://www.googletagmanager.com/gtag/js?id=G-PBDWTCN6H2"
@@ -66,9 +61,6 @@ export default function CookieBanner() {
               </Link>
             </p>
             <div className="flex flex-col gap-2 shrink-0">
-              <Button variant="glow-outline" size="lg" onClick={decline}>
-                Decline
-              </Button>
               <Button variant="default" size="lg" onClick={accept}>
                 Accept
               </Button>
