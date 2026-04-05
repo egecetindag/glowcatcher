@@ -47,9 +47,9 @@ export default function CookieBanner() {
       )}
 
       {consent === null && (
-        <div className="fixed left-0 bottom-0 z-50 p-4 w-full h-1/3 bg-white border border-outline-variant/15 shadow-lg flex items-center justify-center">
-          <div className="max-w-200 mx-auto  rounded-xl px-4 py-3  flex items-center gap-16 flex-wrap">
-            <p className="text-[0.85rem] flex-1 min-w-48">
+        <div className="fixed left-0 bottom-0 z-50 p-4 w-full md:h-1/3 h-1/2 bg-white border border-outline-variant/15 shadow-lg flex items-center justify-center">
+          <div className="max-w-200 mx-auto  rounded-xl px-4 py-3  flex items-center md:gap-16 gap-4 flex-wrap">
+            <p className="md:text-[0.85rem] text-xs flex-1 min-w-48">
               GlowCatcher uses cookies to understand how visitors use our site.
               We use Google Analytics to measure traffic and improve your
               experience. No personal data is sold to third parties. By clicking
