@@ -7,6 +7,7 @@ import Script from "next/script";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import Providers from "@/lib/providers";
+import CookieBanner from "@/components/CookieBannerClient";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -74,6 +75,7 @@ export default function RootLayout({
           src="https://s.skimresources.com/js/300849X1788721.skimlinks.js"
           strategy="afterInteractive"
         />
+        <CookieBanner />
       </body>
     </html>
   );
