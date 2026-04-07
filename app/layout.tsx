@@ -71,10 +71,6 @@ export default function RootLayout({
             </p>
           </footer>
         </Providers>
-        <Script
-          src="https://s.skimresources.com/js/300849X1788721.skimlinks.js"
-          strategy="afterInteractive"
-        />
         <CookieBanner />
       </body>
     </html>
