@@ -6,13 +6,6 @@ export default async function EditorPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Editor panel</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Review and approve submitted deals
-        </p>
-      </div>
-
       {deals && deals.length > 0 ? (
         <div className="flex flex-col gap-4">
           {deals.map((deal) => (

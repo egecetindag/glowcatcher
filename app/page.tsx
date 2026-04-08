@@ -5,6 +5,8 @@ import { getUser } from "@/app/actions/auth/getUser";
 import { getDeals } from "@/app/actions/deals/getDeals";
 import { getUserVotes } from "@/app/actions/deals/getUserVotes";
 import { CATEGORIES } from "@/app/actions/types";
+import SectionsCarousel from "@/components/SectionCarousel";
+import { getSections } from "./actions/sections/getSections";
 
 export default async function HomePage({
   searchParams,
@@ -13,12 +15,12 @@ export default async function HomePage({
 }) {
   const { category, tab = "all" } = await searchParams;
 
-  const [deals, user] = await Promise.all([
+  const [deals, user, sections] = await Promise.all([
     getDeals(category, tab, 0),
     getUser(),
+    getSections(),
   ]);
   const isAdmin = user?.role === "admin";
-
   const voteMap =
     deals.length > 0 ? await getUserVotes(deals.map((d) => d.id)) : {};
 
@@ -27,13 +29,15 @@ export default async function HomePage({
       {/* Hero */}
       <section className="mb-10 pt-4">
         <h1 className="font-serif text-4xl font-bold text-on-surface leading-tight">
-          Radiance is just
-          <br />a deal away.
+          Glow for Less
         </h1>
         <p className="text-on-surface-variant text-sm mb-3 max-w-xs leading-relaxed">
           Discover the best beauty offers!
         </p>
       </section>
+
+      {/* Sections carousel */}
+      <SectionsCarousel sections={sections} />
 
       {/* Category filter */}
       <div className="mb-4">

@@ -23,7 +23,7 @@ export async function getDeals(category?: string, tab?: string, page = 0) {
   if (tab === "most-glowing") {
     query = query.order("glow_count", { ascending: false });
   } else {
-    query = query.order("created_at", { ascending: false });
+    query = query.order("updated_at", { ascending: false });
   }
 
   const { data, error } = await query.range(

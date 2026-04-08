@@ -6,7 +6,6 @@ import { expireDeal } from "@/app/actions/editor";
 
 export default function ExpireButton({ dealId }: { dealId: string }) {
   const [loading, setLoading] = useState(false);
-  console.log("dealId in ExpireButton:", dealId);
   async function handle() {
     setLoading(true);
     try {
