@@ -27,22 +27,22 @@ export default async function HomePage({
   return (
     <div>
       {/* Hero */}
-      <section className="mb-10 pt-4">
-        <h1 className="font-serif text-4xl font-bold text-on-surface leading-tight">
+      {/* <section className="mb-10 pt-1"> */}
+      {/* <h1 className="font-serif text-4xl font-bold text-on-surface leading-tight">
           Glow for Less
-        </h1>
-        <p className="text-on-surface-variant text-sm mb-3 max-w-xs leading-relaxed">
+        </h1> */}
+      {/* <p className="text-on-surface-variant text-sm mb-1 max-w-xs leading-relaxed">
           Discover the best beauty offers!
-        </p>
-      </section>
+        </p> */}
+      {/* </section> */}
 
       {/* Sections carousel */}
       <SectionsCarousel sections={sections} />
 
       {/* Category filter */}
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <CategoryFilter categories={CATEGORIES} active={category || "All"} />
-      </div>
+      </div> */}
 
       {/* Most Glowing / All tabs */}
       <div className="flex gap-1 mb-4 bg-surface-container-low rounded-full p-1 w-fit">

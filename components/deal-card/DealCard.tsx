@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
 import { formatDistanceToNow } from "date-fns";
 import GlowVote from "./GlowVote";
@@ -129,10 +129,10 @@ export default function DealCard({
             </span>
           )}
           <span className="text-xs text-on-surface-variant">·</span>
-          <span className="text-xs font-medium text-on-surface">
-            {deal.store}
+          <span className="text-xs font-medium text-on-surface ">
+            From <b className="bg-yellow-200 p-1">{deal.store}</b>
           </span>
-          {deal.profiles && (
+          {/* {deal.profiles && (
             <>
               <span className="text-xs text-on-surface-variant">·</span>
               <div
@@ -153,7 +153,7 @@ export default function DealCard({
                 </span>
               </div>
             </>
-          )}
+          )} */}
         </div>
 
         {deal.description && (
@@ -190,7 +190,8 @@ export default function DealCard({
               }}
               className="inline-flex max-md:flex-1 whitespace-nowrap items-center gap-1.5 text-xs font-medium"
             >
-              Get The Deal
+              See Deal{" "}
+              <i className="fi fi-rr-arrow-up-right-from-square text-sm leading-none"></i>
             </Button>
           </div>
         </div>

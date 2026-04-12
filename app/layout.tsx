@@ -4,10 +4,11 @@ import { Separator } from "@/components/ui/separator";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import Script from "next/script";
+import { cookies } from "next/headers";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import Providers from "@/lib/providers";
-import CookieBanner from "@/components/CookieBannerClient";
+import CookieBanner from "@/components/CookieBanner";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -24,11 +25,14 @@ export const metadata: Metadata = {
   description: "The best beauty deals in the UK, caught fresh daily.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = await cookies();
+  const consent = cookieStore.get("cookie_consent")?.value;
+
   return (
     <html lang="en" className={`${jakarta.variable} ${notoSerif.variable}`}>
       <head>
@@ -71,7 +75,21 @@ export default function RootLayout({
             </p>
           </footer>
         </Providers>
-        <CookieBanner />
+        {consent === "accepted" && process.env.NODE_ENV === "production" && (
+          <>
+            <Script
+              src="https://www.googletagmanager.com/gtag/js?id=G-PBDWTCN6H2"
+              strategy="afterInteractive"
+            />
+            <Script id="gtag-init" strategy="afterInteractive">{`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-PBDWTCN6H2');
+            `}</Script>
+          </>
+        )}
+        {!consent && <CookieBanner />}
       </body>
     </html>
   );
