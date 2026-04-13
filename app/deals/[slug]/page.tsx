@@ -3,7 +3,7 @@ import { getComments } from "@/app/actions/comments";
 import { getUser } from "@/app/actions/auth/getUser";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import GlowVote from "@/components/deal-card/GlowVote";
+// import GlowVote from "@/components/deal-card/GlowVote";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
@@ -136,11 +136,11 @@ export default async function DealPage({
           <div className="p-6 flex flex-col gap-4">
             {/* Vote + badges + time */}
             <div className="flex items-center gap-2 flex-wrap">
-              <GlowVote
+              {/* <GlowVote
                 dealId={deal.id}
                 initialUp={deal.glow_count}
                 initialDown={deal.down_count ?? 0}
-              />
+              /> */}
               {discount && <Badge variant="discount">-{discount}%</Badge>}
               {isExpired && <Badge variant="matte">Expired</Badge>}
               <span className="text-xs text-on-surface-variant ml-auto">
@@ -189,14 +189,14 @@ export default async function DealPage({
             )}
 
             {/* Posted by */}
-            {deal.profiles && (
+            {/* {deal.profiles && (
               <div className="flex items-center gap-2 text-xs text-on-surface-variant">
                 <span>Posted by</span>
                 <span className="font-medium text-on-surface">
                   {deal.profiles.username}
                 </span>
               </div>
-            )}
+            )} */}
 
             {/* Description */}
             {deal.description && (
@@ -208,7 +208,8 @@ export default async function DealPage({
             {/* Get deal button */}
             <Button variant="glow" size="lg" asChild className="w-full mt-2">
               <Link href={deal.url} target="_blank" rel="noopener noreferrer">
-                Get deal →
+                <div className="mr-1">See Deal</div>
+                <i className="fi fi-rr-arrow-up-right-from-square text-sm leading-none"></i>
               </Link>
             </Button>
             {isAdmin && !isExpired && <ExpireButton dealId={deal.id} />}
