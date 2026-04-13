@@ -22,7 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...new Set((deals ?? []).map((d) => d.store).filter(Boolean)),
   ];
   const storeUrls = stores.map((store) => ({
-    url: `https://glowcatcher.co.uk/sale/${store.toLowerCase().replace(/\s+/g, "-")}`,
+    url: `https://glowcatcher.co.uk/sale/${store.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`,
     lastModified: new Date(),
     changeFrequency: "daily" as const,
     priority: 0.9,
