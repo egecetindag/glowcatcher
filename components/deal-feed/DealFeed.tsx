@@ -16,6 +16,7 @@ type Props = {
   isAdmin: boolean;
   category?: string;
   tab?: string;
+  store?: string;
 };
 
 export default function DealFeed({
@@ -24,6 +25,7 @@ export default function DealFeed({
   isAdmin,
   category,
   tab,
+  store,
 }: Props) {
   const [deals, setDeals] = useState(initialDeals);
   const [votes, setVotes] = useState(initialVotes);
@@ -35,7 +37,7 @@ export default function DealFeed({
   const sentinelRef = useRef<HTMLDivElement>(null);
   function loadMore() {
     startTransition(async () => {
-      const newDeals = await getDeals(category, tab, page);
+      const newDeals = await getDeals(category, tab, page, store);
       if (newDeals.length === 0) {
         setHasMore(false);
         return;

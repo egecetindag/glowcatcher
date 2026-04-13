@@ -169,7 +169,9 @@ export default async function DealPage({
 
             {/* Meta */}
             <div className="flex items-center gap-3 text-sm text-on-surface-variant flex-wrap">
-              <span className="font-medium text-on-surface">{deal.store}</span>
+              <span className="font-medium text-on-surface">
+                From <b className="bg-yellow-200 p-1">{deal.store}</b>
+              </span>
               {deal.category && <Badge variant="matte">{deal.category}</Badge>}
 
               {deal.expires_at && (

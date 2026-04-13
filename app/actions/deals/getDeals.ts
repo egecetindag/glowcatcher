@@ -5,7 +5,12 @@ import { cookies } from "next/headers";
 
 const FEED_PAGE_SIZE = 10;
 
-export async function getDeals(category?: string, tab?: string, page = 0) {
+export async function getDeals(
+  category?: string,
+  tab?: string,
+  page = 0,
+  store?: string,
+) {
   const cookieStore = await cookies();
   const supabase = await createClient(cookieStore);
 
@@ -18,6 +23,10 @@ export async function getDeals(category?: string, tab?: string, page = 0) {
 
   if (category && category !== "All") {
     query = query.eq("category", category);
+  }
+
+  if (store) {
+    query = query.ilike("store", store.replace(/-/g, " "));
   }
 
   if (tab === "most-glowing") {

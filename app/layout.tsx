@@ -54,19 +54,31 @@ export default async function RootLayout({
             <Analytics />
           </main>
           <Separator />
-          <footer className="max-w-200 mx-auto px-4 py-6 flex flex-col items-center gap-2">
+          <footer className="max-w-200 mx-auto px-4 py-6 flex flex-col items-center gap-4">
+            <div className="flex flex-wrap justify-center gap-x-4 gap-y-1">
+              {[
+                ["Boots", "boots"],
+                ["lookfantastic", "lookfantastic"],
+                ["TKMaxx", "tkmaxx"],
+                ["Debenhams", "debenhams"],
+                ["John Lewis", "john-lewis"],
+                ["JustMyLook", "justmylook"],
+              ].map(([label, slug]) => (
+                <Link
+                  key={slug}
+                  href={`/sale/${slug}`}
+                  className="text-xs text-on-surface-variant hover:text-on-surface transition-colors"
+                >
+                  {label} Sale
+                </Link>
+              ))}
+            </div>
             <div className="flex items-center gap-4 text-xs text-on-surface-variant">
-              <Link
-                href="/privacy-policy"
-                className="hover:text-on-surface transition-colors"
-              >
+              <Link href="/privacy-policy" className="hover:text-on-surface transition-colors">
                 Privacy Policy
               </Link>
               <span>·</span>
-              <Link
-                href="/cookie-policy"
-                className="hover:text-on-surface transition-colors"
-              >
+              <Link href="/cookie-policy" className="hover:text-on-surface transition-colors">
                 Cookie Policy
               </Link>
             </div>
