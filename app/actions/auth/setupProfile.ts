@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export async function setupProfile(formData: FormData) {
+export async function setupProfile(_: unknown, formData: FormData) {
   const cookieStore = await cookies();
   const supabase = await createClient(cookieStore);
 
@@ -54,6 +54,9 @@ export async function setupProfile(formData: FormData) {
     })
     .eq("id", user.id);
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    if (error.code === "23505") return { error: "This username is already taken." };
+    return { error: error.message };
+  }
   redirect("/");
 }

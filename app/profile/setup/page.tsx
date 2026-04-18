@@ -1,5 +1,6 @@
 "use client";
 
+import { useActionState } from "react";
 import { setupProfile } from "@/app/actions/auth/setupProfile";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,6 +24,7 @@ function SubmitButton() {
 }
 
 export default function ProfileSetupPage() {
+  const [state, action] = useActionState(setupProfile, null);
   const [preview, setPreview] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -47,7 +49,7 @@ export default function ProfileSetupPage() {
             </p>
           </div>
 
-          <form action={setupProfile} className="flex flex-col gap-5">
+          <form action={action} className="flex flex-col gap-5">
             {/* Avatar */}
             <div className="flex flex-col items-center gap-2">
               <button
@@ -118,6 +120,9 @@ export default function ProfileSetupPage() {
               />
             </div>
 
+            {state?.error && (
+              <p className="text-sm text-destructive">{state.error}</p>
+            )}
             <SubmitButton />
           </form>
         </div>

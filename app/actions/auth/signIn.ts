@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export async function signIn(formData: FormData) {
+export async function signIn(_: unknown, formData: FormData) {
   const cookieStore = await cookies();
   const supabase = await createClient(cookieStore);
 
@@ -13,6 +13,6 @@ export async function signIn(formData: FormData) {
     password: formData.get("password") as string,
   });
 
-  if (error) throw new Error(error.message);
+  if (error) return { error: error.message };
   redirect("/");
 }
