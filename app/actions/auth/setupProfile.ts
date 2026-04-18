@@ -31,6 +31,10 @@ export async function setupProfile(_: unknown, formData: FormData) {
   let avatar_url = null;
 
   if (avatarFile && avatarFile.size > 0) {
+    if (avatarFile.size > 2 * 1024 * 1024) {
+      return { error: "Photo must be smaller than 2MB." };
+    }
+
     const fileExt = avatarFile.name.split(".").pop();
     const filePath = `${user.id}/avatar.${fileExt}`;
 
@@ -38,10 +42,10 @@ export async function setupProfile(_: unknown, formData: FormData) {
       .from("avatars")
       .upload(filePath, avatarFile, { upsert: true });
 
-    if (!uploadError) {
-      const { data } = supabase.storage.from("avatars").getPublicUrl(filePath);
-      avatar_url = data.publicUrl;
-    }
+    if (uploadError) return { error: "Failed to upload photo. Please try again." };
+
+    const { data } = supabase.storage.from("avatars").getPublicUrl(filePath);
+    avatar_url = data.publicUrl;
   }
 
   const { error } = await supabase
